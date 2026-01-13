@@ -1,6 +1,5 @@
 package agh.ics.oop.presenter;
 
-import agh.ics.oop.OptionsParser;
 import agh.ics.oop.Simulation;
 import agh.ics.oop.SimulationEngine;
 import agh.ics.oop.model.*;
@@ -10,7 +9,6 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -18,7 +16,7 @@ import javafx.scene.text.TextAlignment;
 import java.util.List;
 
 public class SimulationPresenter implements MapChangeListener {
-    private WorldMap map;
+    private DarwinWorldMap map;
 
     @FXML
     private Label moveInfoLabel;
@@ -31,7 +29,7 @@ public class SimulationPresenter implements MapChangeListener {
     private static final int BORDER_OFFSET = BORDER / 2;
     private static final List<Vector2d> START_POSITIONS = List.of(new Vector2d(2, 3), new Vector2d(4, 4));
 
-    public void setWorldMap(WorldMap map) {
+    public void setWorldMap(DarwinWorldMap map) {
         this.map = map;
     }
 
@@ -117,7 +115,7 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     @Override
-    public void mapChanged(WorldMap worldMap, String message) {
+    public void mapChanged(DarwinWorldMap worldMap, String message) {
         Platform.runLater(() -> {
             this.drawMap();
             this.moveInfoLabel.setText(message);
@@ -125,13 +123,11 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void startSimulation(String movesText) {
-        GrassField map = new GrassField(10);
+        DarwinWorldMap map = new DarwinWorldMap(Config.DEFAULT);
         this.setWorldMap(map);
         map.addObserver(this);
-        String[] args = movesText.isEmpty() ? new String[0] : movesText.split(" ");
         try {
-            List<MoveDirection> moves = OptionsParser.parseMoveDirections(args);
-            Simulation simulation = new Simulation(this.map, START_POSITIONS, moves);
+            Simulation simulation = new Simulation(this.map, START_POSITIONS, Config.DEFAULT);
             SimulationEngine engine = new SimulationEngine(List.of(simulation));
             engine.runAsync();
         } catch (RuntimeException e) {

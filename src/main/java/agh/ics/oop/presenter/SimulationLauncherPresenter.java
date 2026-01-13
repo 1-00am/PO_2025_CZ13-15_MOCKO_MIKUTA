@@ -8,9 +8,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class SimulationLauncherPresenter {
-    @FXML
-    private TextField movesTextField;
-
     public void onSimulationStartClicked() throws Exception {
         Stage newWindow = new Stage();
         FXMLLoader loader = new FXMLLoader();
@@ -19,7 +16,10 @@ public class SimulationLauncherPresenter {
 
         BorderPane viewRoot = loader.load();
         SimulationPresenter presenter = loader.getController();
-        presenter.startSimulation(movesTextField.getText());
+        newWindow.setOnCloseRequest((event) -> {
+            presenter.exitSimulation();
+        });
+        presenter.startSimulation();
         this.configureStage(newWindow, viewRoot);
         newWindow.show();
     }

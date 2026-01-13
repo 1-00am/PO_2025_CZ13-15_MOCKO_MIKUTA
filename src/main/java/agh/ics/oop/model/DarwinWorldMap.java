@@ -134,39 +134,6 @@ public class DarwinWorldMap {
         }
     }
 
-    public void step() {
-        // clear grid
-        this.animalGrid.clear();
-
-        // remove dead animals
-        this.animalList.removeIf(Animal::isDead);
-
-        // move animals based on genes
-        for (var animal : this.animalList) {
-            animal.rotate();
-            animal.move(this.config);
-        }
-
-        // recreate grid
-        this.recreateGrid();
-
-        // consume
-
-        // procreate
-
-        // grow grass
-        for (int i = 0; i < this.config.newGrassesPerDay(); i++) {
-            this.spawnGrass();
-        }
-
-        // advance animals
-        for (var animal : this.animalList) {
-            animal.advanceDay(this.config);
-        }
-
-        this.mapChanged("Day end");
-    }
-
     public void addObserver(MapChangeListener observer) {
         if (this.observers.contains(observer)) {
             return;
@@ -184,7 +151,72 @@ public class DarwinWorldMap {
         }
     }
 
-    private void removeGrass(Grass grass) {
+    private Grass grassAt(Vector2d position) {
+        return this.grasses.get(position);
+    }
 
+    public void removeGrass(Grass grass) {
+        this.grasses.remove(grass.getPosition());
+    }
+
+    public void clearGrid() {
+        for (var cell : this.animalGrid.values()) {
+            cell.clear();
+        }
+    }
+
+    public void removeDeadAnimals() {
+        this.animalList.removeIf(Animal::isDead);
+    }
+
+    public void handleMovement() {
+        for (var animal : this.animalList) {
+            animal.rotate();
+            animal.move(this.config);
+        }
+
+        this.recreateGrid();
+    }
+
+    public void handleEating() {
+        for (var entry : this.animalGrid.entrySet()) {
+            var grass = this.grassAt(entry.getKey());
+            if (grass == null) {
+                continue;
+            }
+
+            var cell = entry.getValue();
+
+            if (cell.isEmpty()) {
+                continue;
+            }
+
+            var maxEnergy = cell.stream().mapToInt(Animal::getEnergy).max().orElse(0);
+            var chosenAnimals = cell.stream().filter((animal) -> animal.getEnergy() == maxEnergy).toList();
+
+            var oldestBirthDate = chosenAnimals.stream().mapToInt(Animal::getBirthDate).min().orElse(0);
+            chosenAnimals = chosenAnimals.stream().filter((animal) -> animal.getBirthDate() == oldestBirthDate).toList();
+
+            var maxChildrenCount = chosenAnimals.stream().mapToInt(Animal::getChildrenCount).max().orElse(0);
+            chosenAnimals = chosenAnimals.stream().filter((animal) -> animal.getChildrenCount() == maxChildrenCount).toList();
+
+            var index = this.rand.nextInt(chosenAnimals.size());
+            var chosenAnimal = chosenAnimals.get(index);
+            this.removeGrass(grass);
+            chosenAnimal.addEnergy(this.config.grassEnergyValue());
+        }
+    }
+
+    public void spawnGrasses() {
+        for (int i = 0; i < this.config.newGrassesPerDay(); i++) {
+            this.spawnGrass();
+        }
+    }
+
+    public void advanceDay() {
+        for (var animal : this.animalList) {
+            animal.advanceDay(this.config);
+        }
+        this.mapChanged("Day end");
     }
 }

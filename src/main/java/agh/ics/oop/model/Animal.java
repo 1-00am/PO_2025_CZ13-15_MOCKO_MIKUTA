@@ -1,23 +1,26 @@
 package agh.ics.oop.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class Animal implements WorldElement {
-    private MapDirection mapDirection = MapDirection.NORTH;
+    private MapDirection mapDirection;
     private Vector2d position = new Vector2d(2, 2);
     private final List<Integer> genes;
     private int energy;
-    private int age = 0;
+    private int birthDate;
     private int activeGeneIndex;
+    private List<Animal> children = new ArrayList<>();
 
-    public Animal(Vector2d position, Config worldConfig) {
+    public Animal(Vector2d position, Config worldConfig, int day) {
+        var rand = new Random();
         this.position = position;
         this.genes = new ArrayList<>();
         this.energy = worldConfig.startingEnergy();
-        this.activeGeneIndex = new Random().nextInt(worldConfig.geneCount());
+        this.activeGeneIndex = rand.nextInt(worldConfig.geneCount());
+        this.birthDate = day;
+        this.mapDirection = MapDirection.values()[rand.nextInt(MapDirection.values().length)];
 
         for (int i = 0; i < worldConfig.geneCount(); i++) {
             this.genes.add(new Random().nextInt(8));
@@ -48,7 +51,6 @@ public class Animal implements WorldElement {
 
     public void advanceDay(Config config) {
         this.subtractEnergy(config.energyLossPerDay());
-        this.age += 1;
         this.activeGeneIndex = (this.activeGeneIndex + 1) % this.genes.size();
     }
 
@@ -104,7 +106,11 @@ public class Animal implements WorldElement {
         return this.energy;
     }
 
-    public int getAge() {
-        return this.age;
+    public int getBirthDate() {
+        return this.birthDate;
+    }
+
+    public int getChildrenCount() {
+        return this.children.size();
     }
 }

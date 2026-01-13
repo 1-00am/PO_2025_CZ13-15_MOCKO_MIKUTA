@@ -6,16 +6,6 @@
 
 <BorderPane minHeight="91.0" minWidth="693.0" prefHeight="91.0" prefWidth="693.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
    <center>
-          <TextField fx:id="movesTextField" prefWidth="559.0" BorderPane.alignment="CENTER">
-              <opaqueInsets>
-                  <Insets />
-              </opaqueInsets>
-              <BorderPane.margin>
-                  <Insets left="10.0" right="10.0" />
-              </BorderPane.margin>
-      </TextField>
-   </center>
-   <right>
           <Button fx:id="startButton" mnemonicParsing="false" onAction="#onSimulationStartClicked" text="Start" BorderPane.alignment="CENTER">
               <opaqueInsets>
                   <Insets />
@@ -24,5 +14,5 @@
                   <Insets right="10.0" />
               </BorderPane.margin>
       </Button>
-   </right>
+   </center>
 </BorderPane>

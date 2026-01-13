@@ -17,6 +17,7 @@ import java.util.List;
 
 public class SimulationPresenter implements MapChangeListener {
     private DarwinWorldMap map;
+    private Simulation simulation;
 
     @FXML
     private Label moveInfoLabel;
@@ -122,16 +123,21 @@ public class SimulationPresenter implements MapChangeListener {
         });
     }
 
-    public void startSimulation(String movesText) {
+    public void startSimulation() {
         DarwinWorldMap map = new DarwinWorldMap(Config.DEFAULT);
         this.setWorldMap(map);
         map.addObserver(this);
         try {
             Simulation simulation = new Simulation(this.map, START_POSITIONS, Config.DEFAULT);
+            this.simulation = simulation;
             SimulationEngine engine = new SimulationEngine(List.of(simulation));
             engine.runAsync();
         } catch (RuntimeException e) {
             this.moveInfoLabel.setText(e.getMessage());
         }
+    }
+
+    public void exitSimulation() {
+        this.simulation.exit();
     }
 }

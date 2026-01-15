@@ -2,9 +2,11 @@ package agh.ics.oop.model;
 
 public class Grass implements WorldElement {
     private final Vector2d position;
+    private final boolean isJungle;
 
-    public Grass(Vector2d position) {
+    public Grass(Vector2d position,  boolean isJungle) {
         this.position = position;
+        this.isJungle = isJungle;
     }
 
     @Override
@@ -15,5 +17,9 @@ public class Grass implements WorldElement {
     @Override
     public String toString() {
         return "*";
+    }
+
+    public boolean isJungle() {
+        return this.isJungle;
     }
 }

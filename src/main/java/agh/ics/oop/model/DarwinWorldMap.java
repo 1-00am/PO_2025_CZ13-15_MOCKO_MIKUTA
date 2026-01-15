@@ -19,6 +19,8 @@ public class DarwinWorldMap {
 
     private final Config config;
 
+    private int day = 0;
+
     public DarwinWorldMap(Config worldConfig) {
         this.config = worldConfig;
         int width = worldConfig.width();
@@ -100,7 +102,7 @@ public class DarwinWorldMap {
         Collections.swap(freeFields, index, freeFields.size() - 1);
         var position = freeFields.removeLast();
 
-        this.grasses.put(position, new Grass(position));
+        this.grasses.put(position, new Grass(position, freeFields == this.jungleFreeGrassFields));
     }
 
     public void place(Animal animal) throws IncorrectPositionException {
@@ -157,6 +159,11 @@ public class DarwinWorldMap {
 
     public void removeGrass(Grass grass) {
         this.grasses.remove(grass.getPosition());
+        if (grass.isJungle()) {
+            this.jungleFreeGrassFields.add(grass.getPosition());
+        } else {
+            this.steppeFreeGrassFields.add(grass.getPosition());
+        }
     }
 
     public void clearGrid() {
@@ -207,6 +214,33 @@ public class DarwinWorldMap {
         }
     }
 
+    public void handleReproduction() {
+        List<Animal> toPlace =  new ArrayList<>();
+        for (var fieldList : this.animalGrid.values()) {
+            Animal currAnimal = null;
+            for (var animal :  fieldList) {
+                if (animal.getEnergy() < config.breedingEnergyNeeded()) {continue;}
+                if (currAnimal != null) {
+                    Animal newAnimal = currAnimal.reproduce(animal, config.breedingEnergyUsed(), this.day);
+                    toPlace.add(newAnimal);
+                    animal.subtractEnergy(config.breedingEnergyUsed());
+                    currAnimal.subtractEnergy(config.breedingEnergyUsed());
+                    currAnimal = null;
+                } else {
+                    currAnimal = animal;
+                }
+            }
+        }
+
+        for (var animal : toPlace) {
+            try {
+                this.place(animal);
+            } catch (IncorrectPositionException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     public void spawnGrasses() {
         for (int i = 0; i < this.config.newGrassesPerDay(); i++) {
             this.spawnGrass();
@@ -218,5 +252,10 @@ public class DarwinWorldMap {
             animal.advanceDay(this.config);
         }
         this.mapChanged("Day end");
+        this.day++;
+        for (Animal animal : this.animalList) {
+            IO.println();
+        }
+        IO.println("day: %s,  animals: %s".formatted(this.day, this.animalList.size()));
     }
 }

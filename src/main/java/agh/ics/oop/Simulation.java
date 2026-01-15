@@ -28,10 +28,12 @@ public class Simulation implements Runnable {
     }
 
     public void step() {
+        //if (day > 1) {return;}
         this.worldMap.clearGrid();
         this.worldMap.removeDeadAnimals();
         this.worldMap.handleMovement();
         this.worldMap.handleEating();
+        this.worldMap.handleReproduction();
         this.worldMap.spawnGrasses();
         this.worldMap.advanceDay();
     }

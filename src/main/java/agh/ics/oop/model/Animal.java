@@ -7,24 +7,60 @@ import java.util.Random;
 public class Animal implements WorldElement {
     private MapDirection mapDirection;
     private Vector2d position = new Vector2d(2, 2);
+
     private final List<Integer> genes;
+    private final int birthDate;
+    private final List<Animal> children = new ArrayList<>();
+
     private int energy;
-    private int birthDate;
     private int activeGeneIndex;
-    private List<Animal> children = new ArrayList<>();
+
+    private static Random rand = new Random();
 
     public Animal(Vector2d position, Config worldConfig, int day) {
-        var rand = new Random();
         this.position = position;
-        this.genes = new ArrayList<>();
         this.energy = worldConfig.startingEnergy();
-        this.activeGeneIndex = rand.nextInt(worldConfig.geneCount());
         this.birthDate = day;
-        this.mapDirection = MapDirection.values()[rand.nextInt(MapDirection.values().length)];
+        this.mapDirection = MapDirection.values()[Animal.rand.nextInt(MapDirection.values().length)];
 
+        this.genes = new ArrayList<>();
         for (int i = 0; i < worldConfig.geneCount(); i++) {
             this.genes.add(new Random().nextInt(8));
         }
+        this.activeGeneIndex = Animal.rand.nextInt(genes.size());
+
+    }
+
+    public Animal(Animal parentDom, Animal parentSub, int childEnergy, int day) {
+        this.position = parentDom.getPosition();
+        this.energy = childEnergy;
+        this.birthDate = day;
+        this.mapDirection = MapDirection.values()[Animal.rand.nextInt(MapDirection.values().length)];
+
+
+        int energyDom = parentDom.getEnergy();
+        int energySub = parentSub.getEnergy();
+        int totalEnergy = energyDom + energySub;
+
+        int genomeLength = parentDom.getGenes().size();
+        int domGenesCount = (int) Math.round(
+                (double) energyDom / totalEnergy * genomeLength
+        );
+
+        boolean domOnLeft = Math.random() > 0.5;
+
+        List<Integer> genes = new ArrayList<>(genomeLength);
+
+        if (domOnLeft) {
+            genes.addAll(parentDom.getGenes().subList(0, domGenesCount));
+            genes.addAll(parentSub.getGenes().subList(domGenesCount, genomeLength));
+        } else {
+            genes.addAll(parentSub.getGenes().subList(0, genomeLength - domGenesCount));
+            genes.addAll(parentDom.getGenes().subList(genomeLength - domGenesCount, genomeLength));
+        }
+
+        this.genes = genes;
+        this.activeGeneIndex = Animal.rand.nextInt(genes.size());
     }
 
     @Override
@@ -112,5 +148,18 @@ public class Animal implements WorldElement {
 
     public int getChildrenCount() {
         return this.children.size();
+    }
+
+    public List<Integer> getGenes() {
+        return genes;
+    }
+
+    public Animal reproduce(Animal other, int energyUsed, int day) {
+        if (this.getEnergy() > other.getEnergy()) {
+            return new Animal(this, other, 2*energyUsed, day);
+        } else {
+            return new Animal(other, this, 2*energyUsed, day);
+        }
+
     }
 }

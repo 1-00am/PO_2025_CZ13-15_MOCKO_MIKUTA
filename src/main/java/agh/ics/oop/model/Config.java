@@ -23,8 +23,8 @@ public record Config(
         int geneCount
 ) {
     public final static Config DEFAULT =  new Config(
-            10,
-            10,
+            5,
+            5,
             0.2f,
             0.8f,
             false,
@@ -32,7 +32,7 @@ public record Config(
             10,
             1,
             4,
-            5,
+            10,
             1,
             10,
             5,

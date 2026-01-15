@@ -28,7 +28,7 @@ public class SimulationPresenter implements MapChangeListener {
     private static final int CELL_SIZE = 32;
     private static final int BORDER = 2;
     private static final int BORDER_OFFSET = BORDER / 2;
-    private static final List<Vector2d> START_POSITIONS = List.of(new Vector2d(2, 3), new Vector2d(4, 4));
+    private static final List<Vector2d> START_POSITIONS = List.of(new Vector2d(0, 0), new Vector2d(0, 0));
 
     public void setWorldMap(DarwinWorldMap map) {
         this.map = map;

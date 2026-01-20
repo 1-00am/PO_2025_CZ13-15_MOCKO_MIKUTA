@@ -9,6 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -29,10 +30,24 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private Button pauseButton;
 
+    @FXML
+    private Slider iterationsSlider;
+
+    @FXML
+    private Label iterationsLabel;
+
     private static final int CELL_SIZE = 32;
     private static final int BORDER = 2;
     private static final int BORDER_OFFSET = BORDER / 2;
     private static final List<Vector2d> START_POSITIONS = List.of(new Vector2d(0, 0), new Vector2d(0, 0));
+
+    public void init() {
+        this.iterationsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            double iterations = this.iterationsSlider.getValue();
+            this.iterationsLabel.setText("%.2f its/s".formatted(iterations));
+            this.simulation.setSleepDuration((int)(1000.0 / iterations));
+        });
+    }
 
     public void setConfig(Config config) {
         this.config = config;

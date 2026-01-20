@@ -104,6 +104,7 @@ public class SimulationLauncherPresenter {
         BorderPane viewRoot = loader.load();
         SimulationPresenter presenter = loader.getController();
         presenter.setConfig(createConfigFromFields());
+        presenter.init();
         newWindow.setOnCloseRequest(e -> {
             presenter.exitSimulation();
         });

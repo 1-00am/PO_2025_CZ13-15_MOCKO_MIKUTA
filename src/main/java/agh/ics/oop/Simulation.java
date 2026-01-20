@@ -9,8 +9,9 @@ import java.util.List;
 public class Simulation implements Runnable {
     private final List<Animal> animals;
     private final DarwinWorldMap worldMap;
-    private boolean running = true;
-    private boolean paused = false;
+    private volatile boolean running = true;
+    private volatile boolean paused = false;
+    private volatile int sleepDuration = 500;
     private int day = 0;
 
     public Simulation(DarwinWorldMap worldMap, List<Vector2d> startingPositions, Config worldConfig) {
@@ -28,7 +29,6 @@ public class Simulation implements Runnable {
     }
 
     public void step() {
-        //if (day > 1) {return;}
         this.worldMap.clearGrid();
         this.worldMap.removeDeadAnimals();
         this.worldMap.handleMovement();
@@ -41,12 +41,14 @@ public class Simulation implements Runnable {
     @Override
     public void run() {
         while (this.running) {
-            if (!this.paused) {
+            try {
+                if (this.paused) {
+                    Thread.sleep(300);
+                    continue;
+                }
                 this.step();
                 this.day += 1;
-            }
-            try {
-                Thread.sleep(500);
+                Thread.sleep(this.sleepDuration);
             } catch (InterruptedException e) {
                 return;
             }
@@ -67,5 +69,9 @@ public class Simulation implements Runnable {
 
     public boolean isPaused() {
         return this.paused;
+    }
+
+    public void setSleepDuration(int sleepDuration) {
+        this.sleepDuration = sleepDuration;
     }
 }

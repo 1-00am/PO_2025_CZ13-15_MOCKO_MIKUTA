@@ -1,13 +1,13 @@
 package agh.ics.oop.presenter;
 
 import agh.ics.oop.Simulation;
-import agh.ics.oop.SimulationEngine;
 import agh.ics.oop.model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,6 +16,7 @@ import javafx.scene.text.TextAlignment;
 import java.util.List;
 
 public class SimulationPresenter implements MapChangeListener {
+    private Config config;
     private DarwinWorldMap map;
     private Simulation simulation;
 
@@ -25,13 +26,26 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private Canvas worldCanvas;
 
+    @FXML
+    private Button pauseButton;
+
     private static final int CELL_SIZE = 32;
     private static final int BORDER = 2;
     private static final int BORDER_OFFSET = BORDER / 2;
     private static final List<Vector2d> START_POSITIONS = List.of(new Vector2d(0, 0), new Vector2d(0, 0));
 
-    public void setWorldMap(DarwinWorldMap map) {
-        this.map = map;
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
+    public void onPauseButtonClick() {
+        if (simulation.isPaused()) {
+            simulation.resume();
+            this.pauseButton.setText("Pause");
+        } else {
+            simulation.pause();
+            this.pauseButton.setText("Resume");
+        }
     }
 
     public void drawMap() {
@@ -124,14 +138,12 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     public void startSimulation() {
-        DarwinWorldMap map = new DarwinWorldMap(Config.DEFAULT);
-        this.setWorldMap(map);
+        this.map = new DarwinWorldMap(this.config);
         map.addObserver(this);
         try {
-            Simulation simulation = new Simulation(this.map, START_POSITIONS, Config.DEFAULT);
-            this.simulation = simulation;
-            SimulationEngine engine = new SimulationEngine(List.of(simulation));
-            engine.runAsync();
+            this.simulation = new Simulation(this.map, START_POSITIONS, Config.DEFAULT);
+            var simulationThread = new Thread(this.simulation);
+            simulationThread.start();
         } catch (RuntimeException e) {
             this.moveInfoLabel.setText(e.getMessage());
         }

@@ -48,7 +48,7 @@ public class Simulation implements Runnable {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                // ingore
+                return;
             }
         }
     }
@@ -63,5 +63,9 @@ public class Simulation implements Runnable {
 
     public void exit() {
         this.running = false;
+    }
+
+    public boolean isPaused() {
+        return this.paused;
     }
 }

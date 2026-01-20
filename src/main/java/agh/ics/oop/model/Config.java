@@ -7,6 +7,9 @@ public record Config(
         float jungleWorldSizePercentage,
         float jungleGrassGrowthChance,
         boolean firesEnabled,
+        int burnTime,
+        float fireStartChance,
+
 
         // plants
         int startingGrassCount,
@@ -28,6 +31,8 @@ public record Config(
             0.2f,
             0.8f,
             false,
+            2,
+            0.1f,
 
             10,
             1,

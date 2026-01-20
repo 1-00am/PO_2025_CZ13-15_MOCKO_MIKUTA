@@ -83,3 +83,6 @@ http-client.private.env.json
 .idea/ApifoxUploaderProjectSetting.xml
 
 .idea
+
+.gradle
+build

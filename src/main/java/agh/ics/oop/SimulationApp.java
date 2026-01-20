@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
+import agh.ics.oop.presenter.SimulationLauncherPresenter;
 import agh.ics.oop.presenter.SimulationPresenter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,6 +20,8 @@ public class SimulationApp extends javafx.application.Application {
         loader.setLocation(getClass().getClassLoader().getResource("simulation_launcher.fxml"));
 
         BorderPane viewRoot = loader.load();
+        SimulationLauncherPresenter presenter = loader.getController();
+        presenter.init();
         this.configureStage(primaryStage, viewRoot);
         primaryStage.show();
     }

@@ -11,4 +11,7 @@
    <top>
       <Label fx:id="moveInfoLabel" BorderPane.alignment="CENTER" />
    </top>
+   <right>
+      <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#onPauseButtonClick" text="Pause" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>

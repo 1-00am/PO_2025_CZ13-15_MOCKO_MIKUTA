@@ -4,15 +4,247 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane minHeight="91.0" minWidth="693.0" prefHeight="91.0" prefWidth="693.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
-   <center>
+<BorderPane minHeight="91.0" minWidth="383.0" prefHeight="529.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
+   <bottom>
           <Button fx:id="startButton" mnemonicParsing="false" onAction="#onSimulationStartClicked" text="Start" BorderPane.alignment="CENTER">
               <opaqueInsets>
                   <Insets />
               </opaqueInsets>
               <BorderPane.margin>
-                  <Insets right="10.0" />
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
               </BorderPane.margin>
       </Button>
-   </center>
+   </bottom>
+   <top>
+      <VBox prefHeight="200.0" prefWidth="693.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="BASELINE_LEFT" prefHeight="22.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="widthField" />
+                  <Label text="width">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin></Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="6.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="heightField" />
+                  <Label text="height">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="39.0" prefHeight="6.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="jungleWorldSizePercentageField" />
+                  <Label text="jungleWorldSizePercentage">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="92.0" prefHeight="6.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="jungleGrassGrowthChanceField" />
+                  <Label text="jungleGrassGrowthChance">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="66.0" prefHeight="6.0" prefWidth="693.0">
+               <children>
+                  <CheckBox fx:id="firesEnabledField" mnemonicParsing="false">
+                     <HBox.margin>
+                        <Insets left="143.0" />
+                     </HBox.margin></CheckBox>
+                  <Label text="firesEnabled">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="2.0" top="2.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="66.0" prefHeight="6.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="burnTimeField" />
+                  <Label text="burnTime">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="136.0" prefHeight="6.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="fireStartChanceField" />
+                  <Label text="fireStartChance">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="171.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="startingGrassCountField" />
+                  <Label text="startingGrassCount">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="198.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="newGrassesPerDayField" />
+                  <Label text="newGrassesPerDay">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="224.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="grassEnergyValueField" />
+                  <Label text="grassEnergyValue">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="250.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="startingEnergyField" />
+                  <Label text="startingEnergy">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="276.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="energyLossPerDayField" />
+                  <Label text="energyLossPerDay">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="302.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="breedingEnergyNeededField" />
+                  <Label text="breedingEnergyNeeded">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="328.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="breedingEnergyUsedField" />
+                  <Label text="breedingEnergyUsed">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="354.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="minMutationCountField" />
+                  <Label text="minMutationCount">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="380.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="maxMutationCountField" />
+                  <Label text="maxMutationCount">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="406.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="geneCountField" />
+                  <Label text="geneCount">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+         </BorderPane.margin>
+      </VBox>
+   </top>
 </BorderPane>

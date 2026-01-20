@@ -9,9 +9,6 @@
       <Canvas fx:id="worldCanvas" height="200.0" width="200.0" BorderPane.alignment="CENTER" />
    </center>
    <top>
-      <Label fx:id="moveInfoLabel" BorderPane.alignment="CENTER" />
-   </top>
-   <right>
       <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#onPauseButtonClick" text="Pause" BorderPane.alignment="CENTER" />
-   </right>
+   </top>
 </BorderPane>

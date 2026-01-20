@@ -10,6 +10,7 @@ public class Animal implements WorldElement {
 
     private final Genome genome;
     private final int birthDate;
+    private int deathDate;
     private final List<Animal> children = new ArrayList<>();
 
     private int energy;
@@ -121,6 +122,14 @@ public class Animal implements WorldElement {
         return this.birthDate;
     }
 
+    public int getDeathDate() {
+        return this.deathDate;
+    }
+
+    public void setDeathDate(int deathDate) {
+        this.deathDate = deathDate;
+    }
+
     public int getChildrenCount() {
         return this.children.size();
     }
@@ -130,11 +139,13 @@ public class Animal implements WorldElement {
     }
 
     public Animal reproduce(Animal other, int energyUsed, int day) {
+        Animal child;
         if (this.getEnergy() > other.getEnergy()) {
-            return new Animal(this, other, 2*energyUsed, day);
+            child = new Animal(this, other, 2 * energyUsed, day);
         } else {
-            return new Animal(other, this, 2*energyUsed, day);
+            child = new Animal(other, this, 2 * energyUsed, day);
         }
-
+        this.children.add(child);
+        return child;
     }
 }

@@ -1,5 +1,5 @@
 package agh.ics.oop.model;
 
 public interface MapChangeListener {
-    void mapChanged(DarwinWorldMap worldMap, String message);
+    void mapChanged(DarwinWorldMap worldMap);
 }

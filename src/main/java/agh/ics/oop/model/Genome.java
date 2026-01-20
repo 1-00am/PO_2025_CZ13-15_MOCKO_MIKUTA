@@ -40,4 +40,18 @@ public class Genome {
     public void advanceGene() {
         this.activeGeneIndex = (this.activeGeneIndex + 1) % this.genes.size();
     }
+
+    @Override
+    public int hashCode() {
+        return this.genes.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder genomeStr = new StringBuilder();
+        for (int gene : this.genes) {
+            genomeStr.append(gene);
+        }
+        return genomeStr.toString();
+    }
 }

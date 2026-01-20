@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane minHeight="91.0" minWidth="383.0" prefHeight="529.0" prefWidth="383.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
+<BorderPane maxHeight="550.0" maxWidth="380.0" minHeight="550.0" minWidth="380.0" prefHeight="550.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
    <bottom>
           <Button fx:id="startButton" mnemonicParsing="false" onAction="#onSimulationStartClicked" text="Start" BorderPane.alignment="CENTER">
               <opaqueInsets>

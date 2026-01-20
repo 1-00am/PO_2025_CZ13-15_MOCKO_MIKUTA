@@ -3,10 +3,12 @@ package agh.ics.oop.model;
 import agh.ics.oop.model.exceptions.IncorrectPositionException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DarwinWorldMap {
-    private HashMap<Vector2d, List<Animal>> animalGrid = new HashMap<>();
+    private final HashMap<Vector2d, List<Animal>> animalGrid = new HashMap<>();
     private final List<Animal> animalList = new ArrayList<>();
+    private final List<Animal> deadAnimalList = new ArrayList<>();
 
     private final List<Vector2d> jungleFreeGrassFields = new ArrayList<>();
     private final List<Vector2d> steppeFreeGrassFields = new ArrayList<>();
@@ -123,7 +125,9 @@ public class DarwinWorldMap {
             return;
         }
         cell.remove(animal);
+        animal.setDeathDate(this.day);
         this.animalList.remove(animal);
+        this.deadAnimalList.add(animal);
     }
 
     public void recreateGrid() {
@@ -147,9 +151,9 @@ public class DarwinWorldMap {
         this.observers.remove(observer);
     }
 
-    private void mapChanged(String message) {
+    private void mapChanged() {
         for (var observer : this.observers) {
-            observer.mapChanged(this, message);
+            observer.mapChanged(this);
         }
     }
 
@@ -173,6 +177,10 @@ public class DarwinWorldMap {
     }
 
     public void removeDeadAnimals() {
+        this.animalList.stream().filter(Animal::isDead).forEach(animal -> {
+            this.deadAnimalList.add(animal);
+            animal.setDeathDate(this.day);
+        });
         this.animalList.removeIf(Animal::isDead);
     }
 
@@ -251,11 +259,44 @@ public class DarwinWorldMap {
         for (var animal : this.animalList) {
             animal.advanceDay(this.config);
         }
-        this.mapChanged("Day end");
+        this.mapChanged();
         this.day++;
         for (Animal animal : this.animalList) {
             IO.println();
         }
         IO.println("day: %s,  animals: %s".formatted(this.day, this.animalList.size()));
+    }
+
+    public Stats createStats() {
+        int animalCount = this.animalList.size();
+        int grassCount = this.grasses.size();
+
+        HashSet<Vector2d> takenFields = new HashSet<>(this.grasses.keySet());
+        takenFields.addAll(this.animalList.stream().map(Animal::getPosition).toList());
+        int freeFields = this.config.width() * this.config.height() - takenFields.size();
+
+        double avgEnergy = 0.0f;
+        double avgChildCount = 0.0f;
+        HashMap<Genome, Integer> genomeOccurrences = new HashMap<>();
+        for (Animal animal : this.animalList) {
+            avgEnergy += animal.getEnergy();
+            avgChildCount += animal.getChildrenCount();
+            if (!genomeOccurrences.containsKey(animal.getGenome())) {
+                genomeOccurrences.put(animal.getGenome(), 0);
+            }
+            genomeOccurrences.compute(animal.getGenome(), (k, count) -> count + 1);
+        }
+        int mostPopularGenomeOccurrences = genomeOccurrences.values().stream().max(Integer::compareTo).orElse(0);
+        Set<Genome> mostPopularGenomes = genomeOccurrences.entrySet().stream().filter(e -> e.getValue() == mostPopularGenomeOccurrences).map(Map.Entry::getKey).collect(Collectors.toSet());
+        avgEnergy = avgEnergy / animalCount;
+        avgChildCount = avgChildCount / animalCount;
+
+        double avgAge = 0.0f;
+        for (Animal animal : this.deadAnimalList) {
+            avgAge += animal.getDeathDate() - animal.getBirthDate();
+        }
+        avgAge = avgAge / animalCount;
+
+        return new Stats(animalCount, grassCount, freeFields, mostPopularGenomes, avgEnergy, avgChildCount, avgAge);
     }
 }

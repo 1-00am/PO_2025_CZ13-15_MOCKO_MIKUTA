@@ -130,10 +130,9 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     @Override
-    public void mapChanged(DarwinWorldMap worldMap, String message) {
+    public void mapChanged(DarwinWorldMap worldMap) {
         Platform.runLater(() -> {
             this.drawMap();
-            this.moveInfoLabel.setText(message);
         });
     }
 

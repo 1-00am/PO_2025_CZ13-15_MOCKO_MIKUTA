@@ -1,10 +1,13 @@
 package agh.ics.oop.model;
 
+import javafx.scene.image.Image;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Animal implements WorldElement {
+    private static final Image IMAGE = new Image("animal.png");
     private MapDirection mapDirection;
     private Vector2d position = new Vector2d(2, 2);
 
@@ -165,5 +168,15 @@ public class Animal implements WorldElement {
         }
         this.children.add(child);
         return child;
+    }
+
+    @Override
+    public boolean isBurning() {
+        return this.burnDaysLeft > 0;
+    }
+
+    @Override
+    public Image getImage() {
+        return Animal.IMAGE;
     }
 }

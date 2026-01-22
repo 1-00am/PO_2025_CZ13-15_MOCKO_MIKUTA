@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -20,9 +21,6 @@ public class SimulationPresenter implements MapChangeListener {
     private Config config;
     private DarwinWorldMap map;
     private Simulation simulation;
-
-    @FXML
-    private Label moveInfoLabel;
 
     @FXML
     private Canvas worldCanvas;
@@ -40,6 +38,7 @@ public class SimulationPresenter implements MapChangeListener {
     private static final int BORDER = 2;
     private static final int BORDER_OFFSET = BORDER / 2;
     private static final List<Vector2d> START_POSITIONS = List.of(new Vector2d(0, 0), new Vector2d(0, 0));
+    private static final Image FIRE_IMAGE = new Image("fire.png");
 
     public void init() {
         this.iterationsSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -109,7 +108,7 @@ public class SimulationPresenter implements MapChangeListener {
         graphics.setFill(color);
     }
 
-    private void drawCell(GraphicsContext graphics, String text, int x, int y) {
+    private void drawTextCell(GraphicsContext graphics, String text, int x, int y) {
         graphics.fillText(
                 text,
                 x * CELL_SIZE + CELL_SIZE / 2 + BORDER_OFFSET,
@@ -117,16 +116,31 @@ public class SimulationPresenter implements MapChangeListener {
         );
     }
 
+    private void drawWorldElement(GraphicsContext graphics, WorldElement element, int x, int y) {
+        graphics.drawImage(
+            element.getImage(),
+            x * CELL_SIZE + BORDER_OFFSET,
+            this.worldCanvas.getHeight() - (y * CELL_SIZE + CELL_SIZE + BORDER_OFFSET)
+        );
+        if (element.isBurning()) {
+            graphics.drawImage(
+                    FIRE_IMAGE,
+                    x * CELL_SIZE + BORDER_OFFSET,
+                    this.worldCanvas.getHeight() - (y * CELL_SIZE + CELL_SIZE + BORDER_OFFSET)
+            );
+        }
+    }
+
     private void drawCoordinates(GraphicsContext graphics, int mapWidth, int mapHeight, Vector2d lowerLeft) {
-        this.drawCell(graphics, "y/x", 0, mapHeight-1);
+        this.drawTextCell(graphics, "y/x", 0, mapHeight-1);
         int cellX = lowerLeft.getX();
         for (int x = 1; x < mapWidth; x += 1) {
-            this.drawCell(graphics, String.valueOf(cellX), x, mapHeight - 1);
+            this.drawTextCell(graphics, String.valueOf(cellX), x, mapHeight - 1);
             cellX += 1;
         }
         int cellY = lowerLeft.getY();
         for (int y = 0; y < mapHeight - 1; y += 1) {
-            this.drawCell(graphics, String.valueOf(cellY), 0, y);
+            this.drawTextCell(graphics, String.valueOf(cellY), 0, y);
             cellY += 1;
         }
     }
@@ -140,7 +154,7 @@ public class SimulationPresenter implements MapChangeListener {
             var position = element.getPosition();
             var cellX = position.getX() - lowerLeft.getX() + 1;
             var cellY = position.getY() - lowerLeft.getY();
-            this.drawCell(graphics, element.toString(), cellX, cellY);
+            this.drawWorldElement(graphics, element, cellX, cellY);
         }
     }
 
@@ -159,7 +173,7 @@ public class SimulationPresenter implements MapChangeListener {
             var simulationThread = new Thread(this.simulation);
             simulationThread.start();
         } catch (RuntimeException e) {
-            this.moveInfoLabel.setText(e.getMessage());
+            // ignore
         }
     }
 

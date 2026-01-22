@@ -36,8 +36,8 @@ public class Simulation implements Runnable {
         this.worldMap.handleMovement();
         this.worldMap.handleEating(fires);
         this.worldMap.handleReproduction();
-        this.worldMap.spawnGrasses();
         if (this.fires) {this.worldMap.handleFiresGrass();}
+        this.worldMap.spawnGrasses();
         if (this.fires) {this.worldMap.handleFiresAnimals();}
         this.worldMap.advanceDay();
     }

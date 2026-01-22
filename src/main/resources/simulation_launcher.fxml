@@ -20,7 +20,7 @@
          <children>
             <HBox alignment="BASELINE_LEFT" prefHeight="22.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="widthField" />
+                  <Spinner fx:id="widthField" editable="true" />
                   <Label text="width">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -32,7 +32,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="6.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="heightField" />
+                  <Spinner fx:id="heightField" editable="true" />
                   <Label text="height">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -45,7 +45,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="39.0" prefHeight="6.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="jungleWorldSizePercentageField" />
+                  <Spinner fx:id="jungleWorldSizePercentageField" editable="true" />
                   <Label text="jungleWorldSizePercentage">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -58,7 +58,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="92.0" prefHeight="6.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="jungleGrassGrowthChanceField" />
+                  <Spinner fx:id="jungleGrassGrowthChanceField" editable="true" />
                   <Label text="jungleGrassGrowthChance">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -87,7 +87,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="66.0" prefHeight="6.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="burnTimeField" />
+                  <Spinner fx:id="burnTimeField" editable="true" />
                   <Label text="burnTime">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -100,7 +100,7 @@
             </HBox>
              <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="66.0" prefHeight="6.0" prefWidth="693.0">
                  <children>
-                     <Spinner fx:id="burningDailyPenaltyField" />
+                     <Spinner fx:id="burningDailyPenaltyField" editable="true" />
                      <Label text="burningDailyPenalty">
                          <HBox.margin>
                              <Insets left="8.0" />
@@ -113,7 +113,7 @@
              </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="136.0" prefHeight="6.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="fireStartChanceField" />
+                  <Spinner fx:id="fireStartChanceField" editable="true" />
                   <Label text="fireStartChance">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -126,7 +126,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="171.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="startingGrassCountField" />
+                  <Spinner fx:id="startingGrassCountField" editable="true" />
                   <Label text="startingGrassCount">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -139,7 +139,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="198.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="newGrassesPerDayField" />
+                  <Spinner fx:id="newGrassesPerDayField" editable="true" />
                   <Label text="newGrassesPerDay">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -152,7 +152,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="224.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="grassEnergyValueField" />
+                  <Spinner fx:id="grassEnergyValueField" editable="true" />
                   <Label text="grassEnergyValue">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -165,7 +165,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="250.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="startingEnergyField" />
+                  <Spinner fx:id="startingEnergyField" editable="true" />
                   <Label text="startingEnergy">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -178,7 +178,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="276.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="energyLossPerDayField" />
+                  <Spinner fx:id="energyLossPerDayField" editable="true" />
                   <Label text="energyLossPerDay">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -191,7 +191,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="302.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="breedingEnergyNeededField" />
+                  <Spinner fx:id="breedingEnergyNeededField" editable="true" />
                   <Label text="breedingEnergyNeeded">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -204,7 +204,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="328.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="breedingEnergyUsedField" />
+                  <Spinner fx:id="breedingEnergyUsedField" editable="true" />
                   <Label text="breedingEnergyUsed">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -217,7 +217,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="354.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="minMutationCountField" />
+                  <Spinner fx:id="minMutationCountField" editable="true" />
                   <Label text="minMutationCount">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -230,7 +230,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="380.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="maxMutationCountField" />
+                  <Spinner fx:id="maxMutationCountField" editable="true" />
                   <Label text="maxMutationCount">
                      <HBox.margin>
                         <Insets left="8.0" />
@@ -243,7 +243,7 @@
             </HBox>
             <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="406.0" prefHeight="132.0" prefWidth="693.0">
                <children>
-                  <Spinner fx:id="geneCountField" />
+                  <Spinner fx:id="geneCountField" editable="true" />
                   <Label text="geneCount">
                      <HBox.margin>
                         <Insets left="8.0" />

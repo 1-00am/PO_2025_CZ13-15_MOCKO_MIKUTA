@@ -57,8 +57,8 @@ public class SimulationLauncherPresenter {
 
     public void init() {
         Config config = Config.DEFAULT;
-        initIntSpinner(this.widthField, 2, 10, config.width());
-        initIntSpinner(this.heightField, 2, 10, config.height());
+        initIntSpinner(this.widthField, 2, 20, config.width());
+        initIntSpinner(this.heightField, 2, 20, config.height());
         initDoubleSpinner(this.jungleWorldSizePercentageField, 0.0, 1.0, config.jungleWorldSizePercentage(), 0.1);
         initDoubleSpinner(this.jungleGrassGrowthChanceField, 0.0, 1.0, config.jungleGrassGrowthChance(), 0.1);
         initIntSpinner(this.burnTimeField, 1, Integer.MAX_VALUE, config.burnTime());

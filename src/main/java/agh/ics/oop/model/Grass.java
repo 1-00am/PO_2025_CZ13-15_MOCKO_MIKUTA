@@ -1,6 +1,9 @@
 package agh.ics.oop.model;
 
+import javafx.scene.image.Image;
+
 public class Grass implements WorldElement {
+    private static final Image IMAGE = new Image("grass.png");
     private final Vector2d position;
     private final boolean isJungle;
     private boolean isBurning = false;
@@ -17,18 +20,20 @@ public class Grass implements WorldElement {
 
     @Override
     public String toString() {
-        if (this.isBurning) {
-            return "\uD83D\uDD25";
-        } else {
-            return "*";
-        }
+        return "*";
     }
 
     public boolean isJungle() {
         return this.isJungle;
     }
 
+    @Override
     public boolean isBurning() { return this.isBurning; }
 
     public void startFire() { this.isBurning = true; }
+
+    @Override
+    public Image getImage() {
+        return Grass.IMAGE;
+    }
 }

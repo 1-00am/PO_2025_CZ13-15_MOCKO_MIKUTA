@@ -1,6 +1,7 @@
 package agh.ics.oop.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -30,6 +31,24 @@ public class Genome {
         } else {
             this.genes.addAll(genomeSub.genes.subList(0, genomeLength - domGeneCount));
             this.genes.addAll(genomeDom.genes.subList(genomeLength - domGeneCount, genomeLength));
+        }
+        this.mutate();
+    }
+
+    public void mutate() {
+        int n = genes.size();
+        int mutationsCount = rand.nextInt(n);
+        List<Integer> possibilities = new ArrayList<>();
+        for (int i = 0; i < n; i++) {possibilities.add(i);}
+
+        List<Integer> gengesToMutate = new ArrayList<>();
+        for (int i = 0; i < mutationsCount; i++) {
+            int geneToSwap = possibilities.get(rand.nextInt(n-i));
+            Collections.swap(possibilities, geneToSwap, n-i-1);
+            gengesToMutate.add(geneToSwap);
+        }
+        for (int geneId:  gengesToMutate) {
+            genes.set(geneId, rand.nextInt(n));
         }
     }
 

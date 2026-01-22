@@ -49,8 +49,8 @@ public class SimulationPresenter implements MapChangeListener {
         });
     }
 
-    public void setConfig(Config config) {
-        this.config = config;
+    public void setConfig(Config newConfig) {
+        this.config = newConfig;
     }
 
     public void onPauseButtonClick() {
@@ -155,7 +155,7 @@ public class SimulationPresenter implements MapChangeListener {
         this.map = new DarwinWorldMap(this.config);
         map.addObserver(this);
         try {
-            this.simulation = new Simulation(this.map, START_POSITIONS, Config.DEFAULT);
+            this.simulation = new Simulation(this.map, START_POSITIONS, this.config);
             var simulationThread = new Thread(this.simulation);
             simulationThread.start();
         } catch (RuntimeException e) {

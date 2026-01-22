@@ -1,6 +1,7 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.exceptions.IncorrectPositionException;
+import javafx.util.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ public class DarwinWorldMap {
     private final List<Vector2d> jungleFreeGrassFields = new ArrayList<>();
     private final List<Vector2d> steppeFreeGrassFields = new ArrayList<>();
     private final HashMap<Vector2d, Grass> grasses = new HashMap<>();
+    private List<Pair<Grass, Integer>> buringGrasses = new ArrayList<>();
 
     private final Random rand = new Random();
     private final Boundary boundary;
@@ -193,10 +195,10 @@ public class DarwinWorldMap {
         this.recreateGrid();
     }
 
-    public void handleEating() {
+    public void handleEating(boolean fires) {
         for (var entry : this.animalGrid.entrySet()) {
             var grass = this.grassAt(entry.getKey());
-            if (grass == null) {
+            if (grass == null || grass.isBurning()) {
                 continue;
             }
 
@@ -204,6 +206,14 @@ public class DarwinWorldMap {
 
             if (cell.isEmpty()) {
                 continue;
+            }
+
+            if (fires) {
+                if (config.fireStartChance() > rand.nextFloat()) {
+                    grass.startFire();
+                    this.buringGrasses.add(new Pair<>(grass, config.burnTime()));
+                    continue;
+                }
             }
 
             var maxEnergy = cell.stream().mapToInt(Animal::getEnergy).max().orElse(0);
@@ -264,7 +274,54 @@ public class DarwinWorldMap {
         for (Animal animal : this.animalList) {
             IO.println();
         }
-        IO.println("day: %s,  animals: %s".formatted(this.day, this.animalList.size()));
+        //IO.println("day: %s,  fires: %s".formatted(this.day, this.buringGrasses));
+    }
+
+    public void handleFiresGrass() {
+        List<Pair<Grass, Integer>> newBurningGrasses = new ArrayList<>();
+        for (Pair<Grass, Integer> pair: buringGrasses) {
+            Grass grass = pair.getKey();
+            Integer daysLeft = pair.getValue();
+
+            // rozprzestrzenianie
+            Vector2d pos = grass.getPosition();
+            List<Vector2d> neighbours = List.of(
+                    pos.add(MapDirection.NORTH.toUnitVector()),
+                    pos.add(MapDirection.EAST.toUnitVector()),
+                    pos.add(MapDirection.SOUTH.toUnitVector()),
+                    pos.add(MapDirection.WEST.toUnitVector())
+            );
+            for (Vector2d neighbour : neighbours) {
+                Grass neiGrass = grasses.get(neighbour);
+                if (neiGrass != null && !neiGrass.isBurning()) {
+                    neiGrass.startFire();
+                    newBurningGrasses.add(new Pair<>(neiGrass, config.burnTime()));
+                }
+            }
+
+            // wypalanie
+            if (daysLeft > 1) {
+                Pair<Grass, Integer> newPair = new Pair<>(grass, daysLeft-1);
+                newBurningGrasses.add(newPair);
+            } else {
+                removeGrass(grass);
+            }
+        }
+        this.buringGrasses = newBurningGrasses;
+    }
+
+    public void handleFiresAnimals() {
+        for (Pair<Grass, Integer> pair: buringGrasses) {
+            Vector2d pos = pair.getKey().getPosition();
+            List<Animal> animals = animalGrid.get(pos);
+            if (animals == null) { continue; }
+            for (Animal animal : animals) {
+                animal.startBurning(config.burnTime());
+            }
+        }
+        for (Animal animal:  this.animalList) {
+            animal.burn();
+        }
     }
 
     public Stats createStats() {

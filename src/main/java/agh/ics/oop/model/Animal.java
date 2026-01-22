@@ -14,6 +14,8 @@ public class Animal implements WorldElement {
     private final List<Animal> children = new ArrayList<>();
 
     private int energy;
+    private int burnDaysLeft = 0;
+    private int burningDailyPenalty;
 
     private final static Random rand = new Random();
 
@@ -23,6 +25,7 @@ public class Animal implements WorldElement {
         this.birthDate = day;
         this.mapDirection = MapDirection.values()[Animal.rand.nextInt(MapDirection.values().length)];
         this.genome = new Genome(worldConfig.geneCount());
+        this.burningDailyPenalty = worldConfig.burningDailyPenalty();
     }
 
     public Animal(Animal parentDom, Animal parentSub, int childEnergy, int day) {
@@ -30,7 +33,7 @@ public class Animal implements WorldElement {
         this.energy = childEnergy;
         this.birthDate = day;
         this.mapDirection = MapDirection.values()[Animal.rand.nextInt(MapDirection.values().length)];
-
+        this.burningDailyPenalty = parentDom.getBurningDailyPenalty();
 
         int energyDom = parentDom.getEnergy();
         int energySub = parentSub.getEnergy();
@@ -128,6 +131,21 @@ public class Animal implements WorldElement {
 
     public void setDeathDate(int deathDate) {
         this.deathDate = deathDate;
+    }
+
+    public void burn() {
+        if (this.burnDaysLeft > 0) {
+            this.burnDaysLeft--;
+            subtractEnergy(this.burningDailyPenalty);
+        }
+    }
+
+    public int getBurningDailyPenalty() {
+        return this.burningDailyPenalty;
+    }
+
+    public void startBurning(int days) {
+        this.burnDaysLeft = days;
     }
 
     public int getChildrenCount() {

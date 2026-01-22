@@ -23,6 +23,8 @@ public class SimulationLauncherPresenter {
     @FXML
     private Spinner<Integer> burnTimeField;
     @FXML
+    private Spinner<Integer> burningDailyPenaltyField;
+    @FXML
     private Spinner<Double> fireStartChanceField;
     @FXML
     private Spinner<Integer> startingGrassCountField;
@@ -60,6 +62,7 @@ public class SimulationLauncherPresenter {
         initDoubleSpinner(this.jungleWorldSizePercentageField, 0.0, 1.0, config.jungleWorldSizePercentage(), 0.1);
         initDoubleSpinner(this.jungleGrassGrowthChanceField, 0.0, 1.0, config.jungleGrassGrowthChance(), 0.1);
         initIntSpinner(this.burnTimeField, 1, Integer.MAX_VALUE, config.burnTime());
+        initIntSpinner(this.burningDailyPenaltyField, 1, Integer.MAX_VALUE, config.burningDailyPenalty());
         initDoubleSpinner(this.fireStartChanceField, 0.0, 1.0, config.fireStartChance(), 0.1);
         initIntSpinner(this.startingGrassCountField, 0, 50, config.startingGrassCount());
         initIntSpinner(this.newGrassesPerDayField, 0, 10, config.newGrassesPerDay());
@@ -81,6 +84,7 @@ public class SimulationLauncherPresenter {
                 (float)(double)this.jungleGrassGrowthChanceField.getValue(),
                 this.firesEnabledField.isSelected(),
                 this.burnTimeField.getValue(),
+                this.burningDailyPenaltyField.getValue(),
                 (float)(double)this.fireStartChanceField.getValue(),
                 this.startingGrassCountField.getValue(),
                 this.newGrassesPerDayField.getValue(),
@@ -103,7 +107,9 @@ public class SimulationLauncherPresenter {
 
         BorderPane viewRoot = loader.load();
         SimulationPresenter presenter = loader.getController();
-        presenter.setConfig(createConfigFromFields());
+        Config config = createConfigFromFields();
+        //IO.println(config);
+        presenter.setConfig(config);
         presenter.init();
         newWindow.setOnCloseRequest(e -> {
             presenter.exitSimulation();

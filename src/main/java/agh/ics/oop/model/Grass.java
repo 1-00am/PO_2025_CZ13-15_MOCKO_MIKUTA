@@ -3,6 +3,7 @@ package agh.ics.oop.model;
 public class Grass implements WorldElement {
     private final Vector2d position;
     private final boolean isJungle;
+    private boolean isBurning = false;
 
     public Grass(Vector2d position,  boolean isJungle) {
         this.position = position;
@@ -16,10 +17,18 @@ public class Grass implements WorldElement {
 
     @Override
     public String toString() {
-        return "*";
+        if (this.isBurning) {
+            return "\uD83D\uDD25";
+        } else {
+            return "*";
+        }
     }
 
     public boolean isJungle() {
         return this.isJungle;
     }
+
+    public boolean isBurning() { return this.isBurning; }
+
+    public void startFire() { this.isBurning = true; }
 }

@@ -13,10 +13,12 @@ public class Simulation implements Runnable {
     private volatile boolean paused = false;
     private volatile int sleepDuration = 500;
     private int day = 0;
+    private final boolean fires;
 
     public Simulation(DarwinWorldMap worldMap, List<Vector2d> startingPositions, Config worldConfig) {
         this.animals = new ArrayList<>();
         this.worldMap = worldMap;
+        this.fires = worldConfig.firesEnabled();
         for (var position : startingPositions) {
             var animal = new Animal(position, worldConfig, this.day);
             try {
@@ -32,9 +34,11 @@ public class Simulation implements Runnable {
         this.worldMap.clearGrid();
         this.worldMap.removeDeadAnimals();
         this.worldMap.handleMovement();
-        this.worldMap.handleEating();
+        this.worldMap.handleEating(fires);
         this.worldMap.handleReproduction();
         this.worldMap.spawnGrasses();
+        if (this.fires) {this.worldMap.handleFiresGrass();}
+        if (this.fires) {this.worldMap.handleFiresAnimals();}
         this.worldMap.advanceDay();
     }
 

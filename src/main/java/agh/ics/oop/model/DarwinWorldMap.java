@@ -300,7 +300,7 @@ public class DarwinWorldMap {
             }
 
             // wypalanie
-            if (daysLeft > 1) {
+            if (daysLeft > 0) {
                 Pair<Grass, Integer> newPair = new Pair<>(grass, daysLeft-1);
                 newBurningGrasses.add(newPair);
             } else {

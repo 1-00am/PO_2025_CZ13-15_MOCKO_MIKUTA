@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="550.0" maxWidth="380.0" minHeight="550.0" minWidth="380.0" prefHeight="550.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
+<BorderPane maxHeight="630.0" maxWidth="380.0" minHeight="550.0" minWidth="380.0" prefHeight="630.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
    <bottom>
           <Button fx:id="startButton" mnemonicParsing="false" onAction="#onSimulationStartClicked" text="Start" BorderPane.alignment="CENTER">
               <opaqueInsets>
@@ -252,6 +252,33 @@
                </children>
                <VBox.margin>
                   <Insets bottom="1.0" top="1.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="481.0" prefHeight="132.0" prefWidth="693.0">
+               <children>
+                  <Spinner fx:id="startingAnimalCountField" editable="true" />
+                  <Label text="startingAnimalCount">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_LEFT" layoutX="10.0" layoutY="124.0" prefHeight="6.0" prefWidth="693.0">
+               <children>
+                  <CheckBox fx:id="writeToCSVField" mnemonicParsing="false">
+                     <HBox.margin>
+                        <Insets left="143.0" />
+                     </HBox.margin>
+                  </CheckBox>
+                  <Label text="writeToCSV">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="2.0" top="2.0" />
                </VBox.margin>
             </HBox>
          </children>

@@ -1,33 +1,38 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
-import agh.ics.oop.model.exceptions.IncorrectPositionException;
+import agh.ics.oop.model.util.StatsCSVWriter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Simulation implements Runnable {
-    private final List<Animal> animals;
     private final DarwinWorldMap worldMap;
     private volatile boolean running = true;
     private volatile boolean paused = false;
     private volatile int sleepDuration = 500;
-    private int day = 0;
     private final boolean fires;
+    private final boolean writeToCSV;
+    private final UUID uuid = UUID.randomUUID();
+    private final StatsCSVWriter statsCSVWriter;
 
-    public Simulation(DarwinWorldMap worldMap, List<Vector2d> startingPositions, Config worldConfig) {
-        this.animals = new ArrayList<>();
+    public Simulation(DarwinWorldMap worldMap, Config worldConfig) {
         this.worldMap = worldMap;
         this.fires = worldConfig.firesEnabled();
-        for (var position : startingPositions) {
-            var animal = new Animal(position, worldConfig, this.day);
+        this.writeToCSV = worldConfig.writeToCSV();
+        StatsCSVWriter writer = null;
+        if (this.writeToCSV) {
             try {
-                this.worldMap.place(animal);
-                this.animals.add(animal);
-            } catch (IncorrectPositionException e) {
+                writer = new StatsCSVWriter(Path.of("./%s.csv".formatted(this.uuid)));
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        this.statsCSVWriter = writer;
     }
 
     public void step() {
@@ -40,6 +45,14 @@ public class Simulation implements Runnable {
         this.worldMap.spawnGrasses();
         if (this.fires) {this.worldMap.handleFiresAnimals();}
         this.worldMap.advanceDay();
+        if (this.writeToCSV && this.statsCSVWriter != null) {
+            try {
+                this.statsCSVWriter.writeStats(this.worldMap.getStats());
+                this.statsCSVWriter.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -51,7 +64,6 @@ public class Simulation implements Runnable {
                     continue;
                 }
                 this.step();
-                this.day += 1;
                 Thread.sleep(this.sleepDuration);
             } catch (InterruptedException e) {
                 return;

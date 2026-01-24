@@ -34,10 +34,26 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private Label iterationsLabel;
 
+    @FXML
+    private Label dayLabel;
+    @FXML
+    private Label animalCountLabel;
+    @FXML
+    private Label grassCountLabel;
+    @FXML
+    private Label freeFieldCountLabel;
+    @FXML
+    private Label avgEnergyLabel;
+    @FXML
+    private Label avgAgeLabel;
+    @FXML
+    private Label avgChildCountLabel;
+    @FXML
+    private Label mostPopularGenomesLabel;
+
     private static final int CELL_SIZE = 32;
     private static final int BORDER = 2;
     private static final int BORDER_OFFSET = BORDER / 2;
-    private static final List<Vector2d> START_POSITIONS = List.of(new Vector2d(0, 0), new Vector2d(0, 0));
     private static final Image FIRE_IMAGE = new Image("fire.png");
 
     public void init() {
@@ -70,7 +86,6 @@ public class SimulationPresenter implements MapChangeListener {
 
         int canvasWidth = mapWidth * CELL_SIZE + BORDER;
         int canvasHeight = mapHeight * CELL_SIZE + BORDER;
-
         this.worldCanvas.setWidth(canvasWidth);
         this.worldCanvas.setHeight(canvasHeight);
 
@@ -158,10 +173,30 @@ public class SimulationPresenter implements MapChangeListener {
         }
     }
 
+    private void updateStats() {
+        Stats stats = this.map.getStats();
+        if (stats == null) {
+            return;
+        }
+        this.dayLabel.setText(Integer.toString(stats.day()));
+        this.animalCountLabel.setText(Integer.toString(stats.animalCount()));
+        this.grassCountLabel.setText(Integer.toString(stats.grassCount()));
+        this.freeFieldCountLabel.setText(Integer.toString(stats.freeFieldCount()));
+        this.avgEnergyLabel.setText("%.1f".formatted(stats.avgEnergy()));
+        this.avgAgeLabel.setText("%.1f".formatted(stats.avgAge()));
+        this.avgChildCountLabel.setText("%.1f".formatted(stats.avgChildCount()));
+        StringBuilder mostPopularGenomes = new StringBuilder();
+        for (Genome genome : stats.mostPopularGenomes()) {
+            mostPopularGenomes.append(genome.toString()).append("\n");
+        }
+        this.mostPopularGenomesLabel.setText(mostPopularGenomes.toString());
+    }
+
     @Override
     public void mapChanged(DarwinWorldMap worldMap) {
         Platform.runLater(() -> {
             this.drawMap();
+            this.updateStats();
         });
     }
 
@@ -169,7 +204,7 @@ public class SimulationPresenter implements MapChangeListener {
         this.map = new DarwinWorldMap(this.config);
         map.addObserver(this);
         try {
-            this.simulation = new Simulation(this.map, START_POSITIONS, this.config);
+            this.simulation = new Simulation(this.map, this.config);
             var simulationThread = new Thread(this.simulation);
             simulationThread.start();
         } catch (RuntimeException e) {

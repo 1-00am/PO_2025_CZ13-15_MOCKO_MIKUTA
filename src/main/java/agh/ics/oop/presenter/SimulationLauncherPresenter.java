@@ -46,6 +46,10 @@ public class SimulationLauncherPresenter {
     private Spinner<Integer> maxMutationCountField;
     @FXML
     private Spinner<Integer> geneCountField;
+    @FXML
+    private Spinner<Integer> startingAnimalCountField;
+    @FXML
+    private CheckBox writeToCSVField;
 
     static void initIntSpinner(Spinner<Integer> spinner, int min, int max, int initVal) {
         spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, initVal));
@@ -74,6 +78,7 @@ public class SimulationLauncherPresenter {
         initIntSpinner(this.minMutationCountField, 0, Integer.MAX_VALUE, config.minMutationCount());
         initIntSpinner(this.maxMutationCountField, 0, Integer.MAX_VALUE, config.maxMutationCount());
         initIntSpinner(this.geneCountField, 0, Integer.MAX_VALUE, config.geneCount());
+        initIntSpinner(this.startingAnimalCountField, 0, Integer.MAX_VALUE, config.startingAnimalCount());
     }
 
     Config createConfigFromFields() {
@@ -95,7 +100,9 @@ public class SimulationLauncherPresenter {
                 this.breedingEnergyUsedField.getValue(),
                 this.minMutationCountField.getValue(),
                 this.maxMutationCountField.getValue(),
-                this.geneCountField.getValue()
+                this.geneCountField.getValue(),
+                this.startingAnimalCountField.getValue(),
+                this.writeToCSVField.isSelected()
         );
     }
 

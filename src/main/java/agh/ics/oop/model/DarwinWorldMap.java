@@ -1,8 +1,10 @@
 package agh.ics.oop.model;
 
 import agh.ics.oop.model.exceptions.IncorrectPositionException;
+import agh.ics.oop.model.util.RandomPositionGenerator;
 import javafx.util.Pair;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,8 @@ public class DarwinWorldMap {
     private final Config config;
 
     private int day = 0;
+
+    private Stats stats;
 
     public DarwinWorldMap(Config worldConfig) {
         this.config = worldConfig;
@@ -52,6 +56,15 @@ public class DarwinWorldMap {
 
         for (int i = 0; i < worldConfig.startingGrassCount(); i++) {
             this.spawnGrass();
+        }
+
+        RandomPositionGenerator positionGenerator = new RandomPositionGenerator(config.width(), config.height(), config.startingAnimalCount());
+        for (Vector2d position : positionGenerator) {
+            try {
+                this.place(new Animal(position, this.config, this.day));
+            } catch (IncorrectPositionException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -271,10 +284,7 @@ public class DarwinWorldMap {
         }
         this.mapChanged();
         this.day++;
-        for (Animal animal : this.animalList) {
-            IO.println();
-        }
-        //IO.println("day: %s,  fires: %s".formatted(this.day, this.buringGrasses));
+        this.stats = this.createStats();
     }
 
     public void handleFiresGrass() {
@@ -324,7 +334,7 @@ public class DarwinWorldMap {
         }
     }
 
-    public Stats createStats() {
+    private Stats createStats() {
         int animalCount = this.animalList.size();
         int grassCount = this.grasses.size();
 
@@ -352,8 +362,13 @@ public class DarwinWorldMap {
         for (Animal animal : this.deadAnimalList) {
             avgAge += animal.getDeathDate() - animal.getBirthDate();
         }
-        avgAge = avgAge / animalCount;
+        avgAge = avgAge / this.deadAnimalList.size();
+        if (Double.isNaN(avgAge)) avgAge = 0.0;
 
-        return new Stats(animalCount, grassCount, freeFields, mostPopularGenomes, avgEnergy, avgChildCount, avgAge);
+        return new Stats(this.day, animalCount, grassCount, freeFields, mostPopularGenomes, avgEnergy, avgAge, avgChildCount);
+    }
+
+    public Stats getStats() {
+        return this.stats;
     }
 }

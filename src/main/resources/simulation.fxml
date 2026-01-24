@@ -20,4 +20,88 @@
             <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
          </BorderPane.margin></VBox>
    </top>
+   <left>
+      <VBox prefHeight="482.0" prefWidth="195.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox layoutX="14.0" layoutY="10.0" prefHeight="4.0" prefWidth="150.0">
+               <children>
+                  <Label text="Day:" />
+                  <Label fx:id="dayLabel">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="4.0" prefWidth="150.0">
+               <children>
+                  <Label text="Animal count: " />
+                  <Label fx:id="animalCountLabel">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Label>
+               </children>
+            </HBox>
+            <HBox layoutX="14.0" layoutY="10.0" prefHeight="4.0" prefWidth="150.0">
+               <children>
+                  <Label text="Grass count: " />
+                  <Label fx:id="grassCountLabel">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="14.0" layoutY="28.0" prefHeight="4.0" prefWidth="150.0">
+               <children>
+                  <Label text="Free field count: " />
+                  <Label fx:id="freeFieldCountLabel">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="14.0" layoutY="46.0" prefHeight="4.0" prefWidth="150.0">
+               <children>
+                  <Label text="Avg energy:" />
+                  <Label fx:id="avgEnergyLabel">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="14.0" layoutY="82.0" prefHeight="4.0" prefWidth="150.0">
+               <children>
+                  <Label text="Avg age:" />
+                  <Label fx:id="avgAgeLabel">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="14.0" layoutY="100.0" prefHeight="4.0" prefWidth="150.0">
+               <children>
+                  <Label text="Avg child count:" />
+                  <Label fx:id="avgChildCountLabel">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Label text="Most popular genomes:" />
+            <Label fx:id="mostPopularGenomesLabel">
+               <VBox.margin>
+                  <Insets left="8.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="4.0" />
+         </padding>
+      </VBox>
+   </left>
 </BorderPane>

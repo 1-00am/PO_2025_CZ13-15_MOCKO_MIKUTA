@@ -24,7 +24,11 @@ public record Config(
         int breedingEnergyUsed,
         int minMutationCount,
         int maxMutationCount,
-        int geneCount
+        int geneCount,
+        int startingAnimalCount,
+
+        // misc
+        boolean writeToCSV
 ) {
     public final static Config DEFAULT =  new Config(
             5,
@@ -45,7 +49,9 @@ public record Config(
             5,
             0,
             4,
-            7
+            7,
+            3,
+            false
     );
 
 }

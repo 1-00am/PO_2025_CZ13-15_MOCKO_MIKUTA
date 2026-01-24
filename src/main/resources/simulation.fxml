@@ -13,7 +13,7 @@
       <VBox alignment="TOP_CENTER" fillWidth="false" prefHeight="45.0" prefWidth="850.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#onPauseButtonClick" text="Pause" />
-            <Slider fx:id="iterationsSlider" blockIncrement="100.0" max="10.0" min="1.0" prefHeight="16.0" prefWidth="298.0" value="2.0" />
+            <Slider fx:id="iterationsSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="16.0" prefWidth="298.0" showTickMarks="true" value="2.0" />
             <Label fx:id="iterationsLabel" text="2.0 its/s" />
          </children>
          <BorderPane.margin>
@@ -21,7 +21,7 @@
          </BorderPane.margin></VBox>
    </top>
    <left>
-      <VBox prefHeight="482.0" prefWidth="195.0" BorderPane.alignment="CENTER">
+      <VBox fillWidth="false" prefHeight="482.0" prefWidth="158.0" BorderPane.alignment="CENTER">
          <children>
             <HBox layoutX="14.0" layoutY="10.0" prefHeight="4.0" prefWidth="150.0">
                <children>
@@ -104,4 +104,7 @@
          </padding>
       </VBox>
    </left>
+   <right>
+      <VBox prefHeight="482.0" prefWidth="158.0" BorderPane.alignment="CENTER" />
+   </right>
 </BorderPane>

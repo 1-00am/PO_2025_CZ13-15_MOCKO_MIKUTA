@@ -15,8 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import java.util.List;
-
 public class SimulationPresenter implements MapChangeListener {
     private Config config;
     private DarwinWorldMap map;
@@ -51,6 +49,7 @@ public class SimulationPresenter implements MapChangeListener {
     @FXML
     private Label mostPopularGenomesLabel;
 
+    private static final int MAX_CANVAS_CELL_SIZE = 12;
     private static final int CELL_SIZE = 32;
     private static final int BORDER = 2;
     private static final int BORDER_OFFSET = BORDER / 2;
@@ -66,6 +65,11 @@ public class SimulationPresenter implements MapChangeListener {
 
     public void setConfig(Config newConfig) {
         this.config = newConfig;
+        int maxSize = Math.max(this.config.width(), this.config.height());
+        if (maxSize > MAX_CANVAS_CELL_SIZE) {
+            this.worldCanvas.setScaleX((double)MAX_CANVAS_CELL_SIZE / maxSize);
+            this.worldCanvas.setScaleY((double)MAX_CANVAS_CELL_SIZE / maxSize);
+        }
     }
 
     public void onPauseButtonClick() {
@@ -126,8 +130,8 @@ public class SimulationPresenter implements MapChangeListener {
     private void drawTextCell(GraphicsContext graphics, String text, int x, int y) {
         graphics.fillText(
                 text,
-                x * CELL_SIZE + CELL_SIZE / 2 + BORDER_OFFSET,
-                this.worldCanvas.getHeight() - (y * CELL_SIZE + CELL_SIZE / 2 + BORDER_OFFSET)
+                x * CELL_SIZE + CELL_SIZE / 2.0 + BORDER_OFFSET,
+                this.worldCanvas.getHeight() - (y * CELL_SIZE + CELL_SIZE / 2.0 + BORDER_OFFSET)
         );
     }
 
@@ -208,7 +212,7 @@ public class SimulationPresenter implements MapChangeListener {
             var simulationThread = new Thread(this.simulation);
             simulationThread.start();
         } catch (RuntimeException e) {
-            // ignore
+            e.printStackTrace();
         }
     }
 

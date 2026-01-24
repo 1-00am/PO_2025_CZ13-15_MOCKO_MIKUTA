@@ -16,7 +16,7 @@ public class DarwinWorldMap {
     private final List<Vector2d> jungleFreeGrassFields = new ArrayList<>();
     private final List<Vector2d> steppeFreeGrassFields = new ArrayList<>();
     private final HashMap<Vector2d, Grass> grasses = new HashMap<>();
-    private List<Pair<Grass, Integer>> buringGrasses = new ArrayList<>();
+    private List<Pair<Grass, Integer>> burningGrasses = new ArrayList<>();
 
     private final Random rand = new Random();
     private final Boundary boundary;
@@ -224,7 +224,7 @@ public class DarwinWorldMap {
             if (fires) {
                 if (config.fireStartChance() > rand.nextFloat()) {
                     grass.startFire();
-                    this.buringGrasses.add(new Pair<>(grass, config.burnTime()));
+                    this.burningGrasses.add(new Pair<>(grass, config.burnTime()));
                     continue;
                 }
             }
@@ -289,7 +289,7 @@ public class DarwinWorldMap {
 
     public void handleFiresGrass() {
         List<Pair<Grass, Integer>> newBurningGrasses = new ArrayList<>();
-        for (Pair<Grass, Integer> pair: buringGrasses) {
+        for (Pair<Grass, Integer> pair: burningGrasses) {
             Grass grass = pair.getKey();
             Integer daysLeft = pair.getValue();
 
@@ -317,11 +317,11 @@ public class DarwinWorldMap {
                 removeGrass(grass);
             }
         }
-        this.buringGrasses = newBurningGrasses;
+        this.burningGrasses = newBurningGrasses;
     }
 
     public void handleFiresAnimals() {
-        for (Pair<Grass, Integer> pair: buringGrasses) {
+        for (Pair<Grass, Integer> pair: burningGrasses) {
             Vector2d pos = pair.getKey().getPosition();
             List<Animal> animals = animalGrid.get(pos);
             if (animals == null) { continue; }

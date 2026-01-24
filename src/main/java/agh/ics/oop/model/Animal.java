@@ -9,8 +9,21 @@ import java.util.List;
 import java.util.Random;
 
 public class Animal implements WorldElement {
-    private static final Image IMAGE = new Image("animal.png");
-    private static final Image FIRE = new Image("fire.png");
+    private static Image IMAGE;
+    private static Image FIRE;
+    private static Image getImage() {
+        if (IMAGE == null) {
+            IMAGE = new Image("animal.png");
+        }
+        return IMAGE;
+    }
+    private static Image getFire() {
+        if (FIRE == null) {
+            FIRE = new Image("fire.png");
+        }
+        return FIRE;
+    }
+
     private MapDirection mapDirection;
     private Vector2d position = new Vector2d(2, 2);
 
@@ -21,7 +34,7 @@ public class Animal implements WorldElement {
 
     private int energy;
     private int burnDaysLeft = 0;
-    private int burningDailyPenalty;
+    private final int burningDailyPenalty;
 
     private final static Random rand = new Random();
 
@@ -180,9 +193,9 @@ public class Animal implements WorldElement {
 
     @Override
     public void draw(GraphicsContext graphics, double x, double y) {
-        graphics.drawImage(Animal.IMAGE, x, y);
+        graphics.drawImage(getImage(), x, y);
         if (this.isBurning()) {
-            graphics.drawImage(Animal.FIRE, x, y);
+            graphics.drawImage(getFire(), x, y);
         }
         graphics.fillRect(x, y, Math.min(this.energy, SimulationPresenter.CELL_SIZE), 5);
     }

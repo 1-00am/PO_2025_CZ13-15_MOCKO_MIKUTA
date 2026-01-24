@@ -1,89 +1,106 @@
 package agh.ics.oop.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 class AnimalTest {
-//    @Test
-//    void construction() {
-//        Animal animal1 = new Animal(new Vector2d(2, 2), WorldConfig.DEFAULT);
-//        assertEquals(new Vector2d(2, 2), animal1.getPosition());
-//        assertEquals(MapDirection.NORTH, animal1.getMapDirection());
-//
-//        Animal animal2 = new Animal(new Vector2d(3, 3),  WorldConfig.DEFAULT);
-//        assertEquals(new Vector2d(3, 3), animal2.getPosition());
-//        assertEquals(MapDirection.NORTH, animal2.getMapDirection());
-//    }
-//
-//    @Test
-//    void moveForwardBackward() {
-//        DarwinWorldMap validator = new DarwinWorldMap(WorldConfig.DEFAULT);
-//        Animal animal = new Animal(new Vector2d(1, 0), WorldConfig.DEFAULT);
-//        animal.move(MoveDirection.FORWARD, validator);
-//        assertEquals(new Vector2d(1, 1), animal.getPosition());
-//        animal.move(MoveDirection.BACKWARD, validator);
-//        assertEquals(new Vector2d(1, 0), animal.getPosition());
-//    }
-//
-//    @Test
-//    void turn() {
-//        RectangularMap validator = new RectangularMap(4, 4);
-//        Animal animal = new Animal(new Vector2d(1, 0), WorldConfig.DEFAULT);
-//        animal.move(MoveDirection.RIGHT, validator);
-//        assertEquals(MapDirection.EAST, animal.getMapDirection());
-//        animal.move(MoveDirection.LEFT, validator);
-//        assertEquals(MapDirection.NORTH, animal.getMapDirection());
-//    }
-//
-//    @Test
-//    void moveAfterTurning() {
-//        RectangularMap validator = new RectangularMap(4, 4);
-//        Animal animal = new Animal(new Vector2d(0, 0), WorldConfig.DEFAULT);
-//        animal.move(MoveDirection.RIGHT, validator);
-//        animal.move(MoveDirection.FORWARD, validator);
-//        assertEquals(new Vector2d(1, 0), animal.getPosition());
-//        animal.move(MoveDirection.RIGHT, validator);
-//        animal.move(MoveDirection.BACKWARD, validator);
-//        assertEquals(new Vector2d(1, 1), animal.getPosition());
-//    }
-//
-//    @Test
-//    void toStringTest() {
-//        Animal animal = new Animal(new Vector2d(1, 0), WorldConfig.DEFAULT);
-//        assertEquals("^", animal.toString());
-//        assertEquals(new Vector2d(1, 0), animal.getPosition());
-//    }
-//
-//    @Test
-//    void isAt() {
-//        Animal animal = new Animal(new Vector2d(1, 2), WorldConfig.DEFAULT);
-//        assertTrue(animal.isAt(new Vector2d(1, 2)));
-//    }
-//
-//    @Test
-//    void constrainedNorthSouth() {
-//        RectangularMap validator = new RectangularMap(4, 4);
-//        Animal animal1 = new Animal(new Vector2d(0, 0), WorldConfig.DEFAULT);
-//        animal1.move(MoveDirection.BACKWARD, validator);
-//        assertEquals(new Vector2d(0, 0), animal1.getPosition());
-//
-//        Animal animal2 = new Animal(new Vector2d(0, 4), WorldConfig.DEFAULT);
-//        animal2.move(MoveDirection.FORWARD, validator);
-//        assertEquals(new Vector2d(0, 4), animal2.getPosition());
-//    }
-//
-//    @Test
-//    void constrainedEastWest() {
-//        RectangularMap validator = new RectangularMap(4, 4);
-//        Animal animal1 = new Animal(new Vector2d(0, 0), WorldConfig.DEFAULT);
-//        animal1.move(MoveDirection.LEFT, validator);
-//        animal1.move(MoveDirection.FORWARD, validator);
-//        assertEquals(new Vector2d(0, 0), animal1.getPosition());
-//
-//        Animal animal2 = new Animal(new Vector2d(4, 0), WorldConfig.DEFAULT);
-//        animal2.move(MoveDirection.RIGHT, validator);
-//        animal2.move(MoveDirection.FORWARD, validator);
-//        assertEquals(new Vector2d(4, 0), animal2.getPosition());
-//    }
+
+    private Config config;
+
+    @BeforeEach
+    void setup() {
+        config = Config.DEFAULT;
+    }
+
+    @Test
+    void animalIsCreatedWithCorrectInitialValues() {
+        Vector2d position = new Vector2d(3, 4);
+        Animal animal = new Animal(position, config, 5);
+
+        assertEquals(position, animal.getPosition());
+        assertEquals(config.startingEnergy(), animal.getEnergy());
+        assertEquals(5, animal.getBirthDate());
+        assertNotNull(animal.getGenome());
+        assertNotNull(animal.getMapDirection());
+    }
+
+    @Test
+    void isAtWorksCorrectly() {
+        Animal animal = new Animal(new Vector2d(2, 2), config, 0);
+
+        assertTrue(animal.isAt(new Vector2d(2, 2)));
+        assertFalse(animal.isAt(new Vector2d(3, 2)));
+    }
+
+    @Test
+    void advanceDayReducesEnergy() {
+        Animal animal = new Animal(new Vector2d(2, 2), config, 0);
+        int before = animal.getEnergy();
+
+        animal.advanceDay(config);
+
+        assertEquals(before - config.energyLossPerDay(), animal.getEnergy());
+    }
+
+    @Test
+    void energyNeverGoesBelowZero() {
+        Animal animal = new Animal(new Vector2d(2, 2), config, 0);
+
+        animal.subtractEnergy(10_000);
+
+        assertEquals(0, animal.getEnergy());
+        assertTrue(animal.isDead());
+    }
+
+    @Test
+    void moveKeepsAnimalInsideMapBounds() {
+        Animal animal = new Animal(new Vector2d(0, 0), config, 0);
+
+        animal.move(config);
+
+        Vector2d pos = animal.getPosition();
+        assertTrue(pos.getX() >= 0 && pos.getX() < config.width());
+        assertTrue(pos.getY() >= 0 && pos.getY() < config.height());
+    }
+
+    @Test
+    void burningReducesEnergyAndStops() {
+        Animal animal = new Animal(new Vector2d(2, 2), config, 0);
+        animal.startBurning(1);
+
+        int before = animal.getEnergy();
+        animal.burn();
+
+        assertEquals(before - config.burningDailyPenalty(), animal.getEnergy());
+        assertFalse(animal.isBurning());
+    }
+
+    @Test
+    void reproduceCreatesChildWithCorrectEnergyAndBirthDate() {
+        Animal parent1 = new Animal(new Vector2d(2, 2), config, 0);
+        Animal parent2 = new Animal(new Vector2d(2, 2), config, 0);
+
+        int energyUsed = config.breedingEnergyUsed();
+        int day = 10;
+
+        Animal child = parent1.reproduce(parent2, energyUsed, day);
+
+        assertNotNull(child);
+        assertEquals(2 * energyUsed, child.getEnergy());
+        assertEquals(day, child.getBirthDate());
+        assertEquals(1, parent1.getChildrenCount());
+    }
+
+    @Test
+    void childGenomeIsCreatedFromParents() {
+        Animal parent1 = new Animal(new Vector2d(2, 2), config, 0);
+        Animal parent2 = new Animal(new Vector2d(2, 2), config, 0);
+
+        Animal child = parent1.reproduce(parent2, config.breedingEnergyUsed(), 1);
+
+        assertNotNull(child.getGenome());
+    }
 }

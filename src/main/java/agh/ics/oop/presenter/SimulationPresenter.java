@@ -50,7 +50,7 @@ public class SimulationPresenter implements MapChangeListener {
     private Label mostPopularGenomesLabel;
 
     private static final int MAX_CANVAS_CELL_SIZE = 12;
-    private static final int CELL_SIZE = 32;
+    public static final int CELL_SIZE = 32;
     private static final int BORDER = 2;
     private static final int BORDER_OFFSET = BORDER / 2;
     private static final Image FIRE_IMAGE = new Image("fire.png");
@@ -95,13 +95,14 @@ public class SimulationPresenter implements MapChangeListener {
 
         GraphicsContext graphics = this.worldCanvas.getGraphicsContext2D();
         this.clearGrid(graphics);
-        this.drawGrid(graphics);
 
         this.configureFont(graphics, 16, Color.BLACK);
         this.drawCoordinates(graphics, mapWidth, mapHeight, bounds.lowerLeft());
 
-        this.configureFont(graphics, 32, Color.RED);
+        this.configureFont(graphics, 8, Color.GREEN);
         this.drawMapElements(graphics, bounds.lowerLeft());
+
+        this.drawGrid(graphics);
     }
 
     private void clearGrid(GraphicsContext graphics) {
@@ -136,18 +137,9 @@ public class SimulationPresenter implements MapChangeListener {
     }
 
     private void drawWorldElement(GraphicsContext graphics, WorldElement element, int x, int y) {
-        graphics.drawImage(
-            element.getImage(),
-            x * CELL_SIZE + BORDER_OFFSET,
-            this.worldCanvas.getHeight() - (y * CELL_SIZE + CELL_SIZE + BORDER_OFFSET)
-        );
-        if (element.isBurning()) {
-            graphics.drawImage(
-                    FIRE_IMAGE,
-                    x * CELL_SIZE + BORDER_OFFSET,
-                    this.worldCanvas.getHeight() - (y * CELL_SIZE + CELL_SIZE + BORDER_OFFSET)
-            );
-        }
+        double canvasX = x * CELL_SIZE + BORDER_OFFSET;
+        double canvasY = this.worldCanvas.getHeight() - (y * CELL_SIZE + CELL_SIZE + BORDER_OFFSET);
+        element.draw(graphics, canvasX, canvasY);
     }
 
     private void drawCoordinates(GraphicsContext graphics, int mapWidth, int mapHeight, Vector2d lowerLeft) {

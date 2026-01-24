@@ -1,9 +1,9 @@
 package agh.ics.oop.model;
 
-import javafx.scene.image.Image;
+import javafx.scene.canvas.GraphicsContext;
 
 public interface WorldElement {
     Vector2d getPosition();
     boolean isBurning();
-    Image getImage();
+    void draw(GraphicsContext graphics, double x, double y);
 }

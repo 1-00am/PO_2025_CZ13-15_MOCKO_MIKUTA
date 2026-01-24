@@ -1,5 +1,7 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.presenter.SimulationPresenter;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Random;
 
 public class Animal implements WorldElement {
     private static final Image IMAGE = new Image("animal.png");
+    private static final Image FIRE = new Image("fire.png");
     private MapDirection mapDirection;
     private Vector2d position = new Vector2d(2, 2);
 
@@ -176,7 +179,11 @@ public class Animal implements WorldElement {
     }
 
     @Override
-    public Image getImage() {
-        return Animal.IMAGE;
+    public void draw(GraphicsContext graphics, double x, double y) {
+        graphics.drawImage(Animal.IMAGE, x, y);
+        if (this.isBurning()) {
+            graphics.drawImage(Animal.FIRE, x, y);
+        }
+        graphics.fillRect(x, y, Math.min(this.energy, SimulationPresenter.CELL_SIZE), 5);
     }
 }

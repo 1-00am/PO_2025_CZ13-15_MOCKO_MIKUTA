@@ -21,7 +21,7 @@ public class SimulationApp extends javafx.application.Application {
 
         BorderPane viewRoot = loader.load();
         SimulationLauncherPresenter presenter = loader.getController();
-        presenter.init();
+        presenter.init(primaryStage);
         this.configureStage(primaryStage, viewRoot);
         primaryStage.show();
     }

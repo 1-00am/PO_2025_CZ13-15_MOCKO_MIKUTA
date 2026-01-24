@@ -4,17 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="630.0" maxWidth="380.0" minHeight="550.0" minWidth="380.0" prefHeight="630.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
-   <bottom>
-          <Button fx:id="startButton" mnemonicParsing="false" onAction="#onSimulationStartClicked" text="Start" BorderPane.alignment="CENTER">
-              <opaqueInsets>
-                  <Insets />
-              </opaqueInsets>
-              <BorderPane.margin>
-                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-              </BorderPane.margin>
-      </Button>
-   </bottom>
+<BorderPane maxHeight="681.0" maxWidth="380.0" minHeight="550.0" minWidth="380.0" prefHeight="681.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationLauncherPresenter">
    <top>
       <VBox prefHeight="200.0" prefWidth="693.0" BorderPane.alignment="CENTER">
          <children>
@@ -287,4 +277,38 @@
          </BorderPane.margin>
       </VBox>
    </top>
+   <bottom>
+      <VBox alignment="BOTTOM_CENTER" prefHeight="115.0" prefWidth="372.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="errorLabel" textFill="#e30000" />
+                <Button fx:id="loadButton" mnemonicParsing="false" onAction="#onSimulationStartClicked" text="Load">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="saveButton" layoutX="151.0" layoutY="22.0" mnemonicParsing="false" onAction="#onSimulationStartClicked" text="Save">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="startButton" layoutX="172.0" layoutY="52.0" mnemonicParsing="false" onAction="#onSimulationStartClicked" prefHeight="26.0" prefWidth="64.0" text="Start">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+         </BorderPane.margin>
+      </VBox>
+   </bottom>
 </BorderPane>

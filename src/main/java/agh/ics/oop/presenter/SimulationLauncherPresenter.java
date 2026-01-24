@@ -6,8 +6,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class SimulationLauncherPresenter {
     @FXML
@@ -51,6 +57,13 @@ public class SimulationLauncherPresenter {
     @FXML
     private CheckBox writeToCSVField;
 
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button loadButton;
+    @FXML
+    private Label errorLabel;
+
     static void initIntSpinner(Spinner<Integer> spinner, int min, int max, int initVal) {
         spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, initVal));
     }
@@ -59,8 +72,43 @@ public class SimulationLauncherPresenter {
         spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(min, max, initVal, step));
     }
 
-    public void init() {
-        Config config = Config.DEFAULT;
+    public void init(Stage stage) {
+        this.setFieldsFromConfig(Config.DEFAULT);
+
+        FileChooser fileChooser = new FileChooser();
+
+        saveButton.setOnAction(event -> {
+            fileChooser.setInitialFileName("config.preset");
+            File file = fileChooser.showSaveDialog(stage);
+            if (file == null) {
+                return;
+            }
+            try (FileWriter filewriter = new FileWriter(file)) {
+                filewriter.write(this.createConfigFromFields().toString());
+            } catch (IOException e) {
+                errorLabel.setText("File write error");
+            }
+        });
+        loadButton.setOnAction(event -> {
+            File file = fileChooser.showOpenDialog(stage);
+            if (file == null) {
+                return;
+            }
+            try (FileReader filereader = new FileReader(file)) {
+                String configString = filereader.readAllAsString();
+                try {
+                    Config config = Config.fromString(configString);
+                    this.setFieldsFromConfig(config);
+                } catch (Exception e) {
+                    errorLabel.setText("Config format error");
+                }
+            } catch (IOException e) {
+                errorLabel.setText("File read error");
+            }
+        });
+    }
+
+    private void setFieldsFromConfig(Config config) {
         initIntSpinner(this.widthField, 2, 32, config.width());
         initIntSpinner(this.heightField, 2, 32, config.height());
         initDoubleSpinner(this.jungleWorldSizePercentageField, 0.0, 1.0, config.jungleWorldSizePercentage(), 0.1);
@@ -79,6 +127,8 @@ public class SimulationLauncherPresenter {
         initIntSpinner(this.maxMutationCountField, 0, Integer.MAX_VALUE, config.maxMutationCount());
         initIntSpinner(this.geneCountField, 0, Integer.MAX_VALUE, config.geneCount());
         initIntSpinner(this.startingAnimalCountField, 0, Integer.MAX_VALUE, config.startingAnimalCount());
+        this.firesEnabledField.setSelected(config.firesEnabled());
+        this.writeToCSVField.setSelected(config.writeToCSV());
     }
 
     Config createConfigFromFields() {
